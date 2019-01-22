@@ -19,7 +19,7 @@ public class RibbonRmoteService {
 	@HystrixCommand(fallbackMethod="callError")
 	public String call(){
 		logger.info(" call ribbon service method started");
-		return restTemplate.getForObject("http://cloudclient-1/user/list",String.class);
+		return restTemplate.getForObject("http://cloudclient/user/list",String.class);
 	}
 	
 	public String callError(){
