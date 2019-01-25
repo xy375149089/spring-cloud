@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.george.cloudclient.mapper.UserMapper">
+	<resultMap id="baseMap" type="com.george.cloudclient.entity.User">
+		<result column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="UNAME" property="uName" jdbcType="VARCHAR" />
+		<result column="USEX" property="uSex" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="getUserList" resultType="com.george.cloudclient.entity.User">
+		SELECT
+		 T.ID,
+		 T.UNAME,
+		 T.USEX
+		 FROM T_TEST_USER T ORDER BY ${_parameter.param1} , ${_parameter.param2} DESC
+	</select>
+	
+	<select id="getUserByID" resultMap="baseMap">
+		SELECT 
+		 T.ID,
+		 T.UNAME,
+		 T.USEX
+		 FROM T_TEST_USER T WHERE T.ID = #{id,jdbcType=DECIMAL}
+	</select>
+	
+	<select id="getUserByCondinton" parameterType="string" resultMap="baseMap">
+		SELECT 
+		 T.ID,
+		 T.UNAME,
+		 T.USEX
+		 FROM T_TEST_USER T WHERE T.UNAME = #{uname,jdbcType=VARCHAR}
+		 AND T.USEX = #{usex,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="saveUser" parameterType="com.george.cloudclient.entity.User">
+		<selectKey keyProperty="id" resultType="long" order="BEFORE">
+   			 SELECT SEQ_TEST_USER.NEXTVAL FROM DUAL
+  		</selectKey>
+		INSERT INTO T_TEST_USER VALUES(#{id,jdbcType=DECIMAL},#{uName,jdbcType=VARCHAR},#{uSex,jdbcType=VARCHAR})
+	</insert>
+	
+	<parameterMap type="map" id="batchUserMap">
+		<parameter property="userList" jdbcType="ARRAY" mode="IN" typeHandler="com.george.cloudclient.typehandler.UserTypeHandler" />
+	</parameterMap>
+	
+	<insert id="batchSaveUser" statementType="CALLABLE" parameterMap="batchUserMap">
+		{CALL PKG_TEST_PKG.PROC_USER_BATCH_INSERT(?)}
+	</insert>
+	
+	<delete id="deleteRole" parameterType="int">
+		DELETE FROM T_TEST_ROLE T WHERE T.ID = 1
+	</delete>
+</mapper>
