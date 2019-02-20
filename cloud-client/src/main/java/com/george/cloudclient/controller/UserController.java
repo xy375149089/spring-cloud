@@ -28,7 +28,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@Value("${spring.hello}")
+	@Value("${spring.hello:hello}")
 	private String strMsg;
 	
 	@RequestMapping("/main")
