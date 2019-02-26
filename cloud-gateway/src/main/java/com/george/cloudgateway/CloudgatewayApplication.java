@@ -5,8 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 
-import com.george.cloudgateway.filter.TokenFilter;
-import com.george.cloudgateway.filter.factory.VisitTimeLoggerGatewayFilterFactory;
+import com.george.cloudgateway.filter.HeaderGlobalFilter;
+import com.george.cloudgateway.filter.factory.VisitInfoGatewayFilterFactory;
+import com.george.cloudgateway.rate.limiter.HostAddrKeyResolver;
 
 @SpringBootApplication
 @EnableEurekaClient
@@ -17,12 +18,17 @@ public class CloudgatewayApplication {
 	}
 	
 	@Bean
-	public VisitTimeLoggerGatewayFilterFactory registerFactory(){
-		return new VisitTimeLoggerGatewayFilterFactory();
+	public VisitInfoGatewayFilterFactory registerGatewayFactory(){
+		return new VisitInfoGatewayFilterFactory();
 	}
 	
 	@Bean
-	public TokenFilter registerGlobalFilter(){
-		return new TokenFilter();
+	public HeaderGlobalFilter registerGlobalFilter(){
+		return new HeaderGlobalFilter();
 	}
+	
+	@Bean
+    public HostAddrKeyResolver hostAddrKeyResolver() {
+        return new HostAddrKeyResolver();
+    }
 }

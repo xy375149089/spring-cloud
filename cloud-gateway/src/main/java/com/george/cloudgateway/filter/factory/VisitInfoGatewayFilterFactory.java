@@ -10,16 +10,16 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 
 import reactor.core.publisher.Mono;
 
-public class VisitTimeLoggerGatewayFilterFactory extends AbstractGatewayFilterFactory<VisitTimeLoggerGatewayFilterFactory.Config>{
+public class VisitInfoGatewayFilterFactory extends AbstractGatewayFilterFactory<VisitInfoGatewayFilterFactory.Config>{
 	
-	private static final Logger logger = LoggerFactory.getLogger(VisitTimeLoggerGatewayFilterFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger(VisitInfoGatewayFilterFactory.class);
 
     @Override
     public List<String> shortcutFieldOrder() {
         return Arrays.asList("flag");
     }
 
-    public VisitTimeLoggerGatewayFilterFactory() {
+    public VisitInfoGatewayFilterFactory() {
         super(Config.class);
     }
 	
@@ -28,9 +28,9 @@ public class VisitTimeLoggerGatewayFilterFactory extends AbstractGatewayFilterFa
         return (exchange, chain) -> {
             return chain.filter(exchange).then(
                 Mono.fromRunnable(() -> {
-                    if (config.getFlag().equals("ON")) {
-                        logger.info("params : {} " , exchange.getRequest().getQueryParams());
-                    }
+                	if(config.isFlag()){
+                		logger.info(" get vister host {} " , exchange.getRequest().getRemoteAddress().getHostName());
+                	}
                 })
             );
         };
@@ -38,13 +38,13 @@ public class VisitTimeLoggerGatewayFilterFactory extends AbstractGatewayFilterFa
 
 	public static class Config {
 
-		protected String flag;
+		protected boolean flag;
 
-		public String getFlag() {
+		public boolean isFlag() {
 			return flag;
 		}
 
-		public void setFlag(String flag) {
+		public void setFlag(boolean flag) {
 			this.flag = flag;
 		}
     }
