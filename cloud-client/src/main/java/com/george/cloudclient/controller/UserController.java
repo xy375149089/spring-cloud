@@ -28,12 +28,12 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@Value("${spring.hello:hello}")
-	private String strMsg;
+	@Value("${customer.name}")
+	private String name;
 	
 	@RequestMapping("/main")
 	public String main(){
-		logger.info("get config {} " , strMsg);
+		logger.info("get config {} " , name);
 		return "main";
 	}
 	
