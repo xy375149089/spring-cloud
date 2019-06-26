@@ -2,7 +2,7 @@ package com.george.cloudgateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
 import com.george.cloudgateway.filter.HeaderGlobalFilter;
@@ -10,7 +10,7 @@ import com.george.cloudgateway.filter.factory.VisitInfoGatewayFilterFactory;
 import com.george.cloudgateway.rate.limiter.HostAddrKeyResolver;
 
 @SpringBootApplication
-@EnableEurekaClient
+@EnableDiscoveryClient
 public class CloudgatewayApplication {
 
 	public static void main(String[] args) {
